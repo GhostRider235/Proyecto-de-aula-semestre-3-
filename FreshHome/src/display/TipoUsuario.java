@@ -76,12 +76,11 @@ public class TipoUsuario extends javax.swing.JFrame {
                             .addComponent(RegistrarCliente2)
                             .addComponent(RegistrarEmpleado2)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(98, 98, 98)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabel10))
-                            .addComponent(jLabel9))))
+                        .addGap(81, 81, 81)
+                        .addComponent(jLabel10))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(70, 70, 70)
+                        .addComponent(jLabel9)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -89,9 +88,9 @@ public class TipoUsuario extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel10)
-                .addGap(18, 18, 18)
+                .addGap(24, 24, 24)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(RegistrarCliente2))
@@ -120,12 +119,14 @@ public class TipoUsuario extends javax.swing.JFrame {
         RegistroCliente Registro = new RegistroCliente();
         Registro.setVisible(true);
         Registro.setLocationRelativeTo(null);
+        
     }//GEN-LAST:event_RegistrarCliente2ActionPerformed
 
     private void RegistrarEmpleado2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarEmpleado2ActionPerformed
         RegistroEmpleado Registro = new RegistroEmpleado();
         Registro.setVisible(true);
         Registro.setLocationRelativeTo(null);
+        
     }//GEN-LAST:event_RegistrarEmpleado2ActionPerformed
 
     /**
@@ -134,26 +135,12 @@ public class TipoUsuario extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton RegistrarCliente;
-    private javax.swing.JButton RegistrarCliente1;
     private javax.swing.JButton RegistrarCliente2;
-    private javax.swing.JButton RegistrarEmpleado;
-    private javax.swing.JButton RegistrarEmpleado1;
     private javax.swing.JButton RegistrarEmpleado2;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
 }
