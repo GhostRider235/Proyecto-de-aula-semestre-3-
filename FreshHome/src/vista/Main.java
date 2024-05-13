@@ -1,13 +1,13 @@
 
 package vista;
 
-import display.Pantalla1;
+import display.PantallaInicioSesion;
 
 public class Main {
 
     public static void main(String[] args) {
         
-        Pantalla1 view = new Pantalla1();
+        PantallaInicioSesion view = new PantallaInicioSesion();
         view.setVisible(true);
         view.setLocationRelativeTo(null);
         

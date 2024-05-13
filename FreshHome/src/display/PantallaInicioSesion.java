@@ -7,9 +7,9 @@ import model.Empleado;
 import model.Listados;
 import model.Persona;
 
-public class Pantalla1 extends javax.swing.JFrame{
+public class PantallaInicioSesion extends javax.swing.JFrame{
 
-    public Pantalla1() {
+    public PantallaInicioSesion() {
         initComponents();
     }
 
