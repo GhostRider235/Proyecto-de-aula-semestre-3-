@@ -68,4 +68,8 @@ public class ManejoArchivos {
 
         return listaRetornar;
     }
+    public static boolean VerificarArchivo(String NombreORuta) {
+        File archivo = new File(NombreORuta);
+        return archivo.exists();
+    }
 }
