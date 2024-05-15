@@ -261,7 +261,7 @@ public class RegistroCliente extends javax.swing.JFrame {
             NuevoCliente.setDiaNacimiento(DiaNacimiento);
             NuevoCliente.setMesNacimiento((int) jComboMes.getSelectedIndex() + 1);
             
-            
+            listas.getLitadoClientes().add(NuevoCliente);
         }
     }//GEN-LAST:event_RegistarActionPerformed
 

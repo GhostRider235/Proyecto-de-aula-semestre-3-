@@ -33,13 +33,13 @@ public class ManejoArchivos {
         System.out.println("Archivo creado");
     }
 
-    public static void SobreEscribirListas(String NombreORuta, List<Empleado> lista) {
+    public static void SobreEscribirListas(String NombreORuta, List<Persona> lista) {
         File Archivo = new File(NombreORuta);
 
         try {
             PrintWriter sobreEscrbir = new PrintWriter(Archivo);
-            for (Empleado empleado : lista) {
-                sobreEscrbir.println(empleado);
+            for (Persona persona : lista) {
+                sobreEscrbir.println(persona);
             }
             
             sobreEscrbir.close();
