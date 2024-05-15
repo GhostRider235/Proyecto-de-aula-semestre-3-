@@ -1,16 +1,36 @@
 package control;
 
+import java.time.DateTimeException;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JOptionPane;
 import model.Cliente;
 import model.Listados;
 import model.Persona;
 
 public class ProcesosClientes implements Registro<Cliente> {
 
-    public Cliente Datos(String Direccion, int codigoPostal, int Calificacion, String NombreCompleto, String numeroCedula, int añoNacimiento, int mesNacimiento, int diaNacimiento, int numeroCelular, String contraseña, Map<String, String> comentarios, List<Integer> calificaciones,String Correo) {
-        Cliente clienteIngreso = new Cliente(Direccion, codigoPostal, Calificacion, NombreCompleto, numeroCedula, añoNacimiento, mesNacimiento, diaNacimiento, numeroCelular, contraseña, Correo, comentarios, calificaciones);
-        return clienteIngreso;
+    public Cliente Datos(String Direccion, int codigoPostal, String NombreCompleto, String numeroCedula, int añoNacimiento, int mesNacimiento, int diaNacimiento, int numeroCelular, String contraseña,String Correo, String ConfirmacionContraseña) {
+        Cliente cliente = new Cliente();      
+        JOptionPane aviso = new JOptionPane();
+        cliente.setNumeroCelular(numeroCelular);
+        cliente.setNombreCompleto(NombreCompleto);
+        cliente.setCodigo_Postal(codigoPostal);
+        cliente.setDireccion(Direccion);
+        cliente.setCorreo(Correo);
+        try {
+            cliente.setAñoNacimiento(añoNacimiento);
+            cliente.setMesNacimiento(mesNacimiento);
+            cliente.setDiaNacimiento(diaNacimiento);
+        } catch (DateTimeException e) {
+            aviso.showMessageDialog(null, "Por favor ingrese una fecha correcta.");
+        }
+        if (contraseña.equals(ConfirmacionContraseña)) {
+            cliente.setContraseña(contraseña);
+        } else {
+            aviso.showMessageDialog(null, "Las contraseñas ingresadas no coinciden.");
+        }
+        return cliente;
     }
 
     @Override

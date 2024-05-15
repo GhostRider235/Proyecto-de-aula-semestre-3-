@@ -1,6 +1,8 @@
 package display;
 
 import control.ManejoArchivos;
+import control.ManejoArchivosClientes;
+import control.ProcesosClientes;
 import javax.swing.JOptionPane;
 import model.Cliente;
 import model.Listados;
@@ -224,45 +226,46 @@ public class RegistroCliente extends javax.swing.JFrame {
         JOptionPane aviso = new JOptionPane();
         Listados listas = new Listados();
         Cliente NuevoCliente = new Cliente();
-        ManejoArchivos Archivo = new ManejoArchivos();
-        
-        
+        ManejoArchivos Archivo = new ManejoArchivosClientes();
+        ProcesosClientes ingresoCliente = new ProcesosClientes();
 
         char[] contraseñaCaracteres = txtContraseña.getPassword();
         String contraseña = new String(contraseñaCaracteres);
         char[] Confirmacion = txtConfirmarContraseña.getPassword();
         String confirmacionContraseña = new String(Confirmacion);
 
-        int DiaNacimiento = (int) SpinnerDia.getValue();
-        
-        for (Cliente c : listas.getLitadoClientes()) {
-            if (!c.getNumeroCedula().equals(txtIdentificacion.getText())) {
-                NuevoCliente.setCodigo_Postal(Integer.parseInt(txtCodigoPostal.getText()));
-            } else {
-                aviso.showMessageDialog(null, "Esta cedula ya ha sido registrada.");
-            }
-            if (!c.getCorreo().equals(txtCorreo.getText())) {
-                NuevoCliente.setCorreo(txtCorreo.getText());
-            } else {
-                aviso.showMessageDialog(null, "Esta correo ya esta siendo usado.");
-            }
-        }
-
         if (!contraseña.equals(confirmacionContraseña)) {
             aviso.showMessageDialog(null, "Por favor escriba bien su contraseña.");
         } else {
 
-            NuevoCliente.setNombreCompleto(txtNombre.getText());
+            for (Cliente c : listas.getLitadoClientes()) {
+                if (!c.getNumeroCedula().equals(txtIdentificacion.getText())) {
+                    if (!c.getCorreo().equals(txtCorreo.getText())) {
+                        
+                        ingresoCliente.Datos(txtDireccion.getText(),
+                                Integer.parseInt(txtCodigoPostal.getText()) , 
+                                txtNombre.getText(), txtIdentificacion.getText(), 
+                                Integer.parseInt(txtAño.getText()),
+                                jComboMes.getSelectedIndex()+1, (int)SpinnerDia.getValue(),
+                                Integer.parseInt(txtCelular.getText()), contraseña, 
+                                txtCorreo.getText(), confirmacionContraseña);
+                        
+                        listas.getLitadoClientes().add(NuevoCliente);
 
-            NuevoCliente.setDireccion(txtDireccion.getText());
-            NuevoCliente.setNumeroCelular(Integer.parseInt(txtCelular.getText()));
-            NuevoCliente.setNumero_Cedula(txtIdentificacion.getText());
-            NuevoCliente.setAñoNacimiento(Integer.parseInt(txtAño.getText()));
-            NuevoCliente.setDiaNacimiento(DiaNacimiento);
-            NuevoCliente.setMesNacimiento((int) jComboMes.getSelectedIndex() + 1);
-            
-            listas.getLitadoClientes().add(NuevoCliente);
+                        Archivo.SobreEscribirListas("Almacen de datos/ListaClientes.txt", listas.getLitadoClientes());
+                        PantallaCliente vista = new PantallaCliente();
+                        vista.setVisible(true);
+                    } else {
+                        aviso.showMessageDialog(null, "Esta correo ya esta siendo usado.");
+                    }
+                } else {
+                    aviso.showMessageDialog(null, "Esta cedula ya ha sido registrada.");
+                }
+
+            }
+
         }
+
     }//GEN-LAST:event_RegistarActionPerformed
 
     /**

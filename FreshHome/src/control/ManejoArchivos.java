@@ -1,75 +1,26 @@
 package control;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
-import model.Empleado;
-import model.Persona;
 
-public class ManejoArchivos {
+public interface ManejoArchivos<T> {
 
-    static Persona Convertir(String linea) {
-        Persona objeto = new Persona();
-        if (linea.length()<9) {
-            System.out.println("La linea que se esta leyendo no tiene los suficeintes caracteres para ser leida como un objeto");
-        }
-        
-        return objeto;
-    }
-
-    public static void CrearArchivo(String NombreORuta) {
-        File Archivo = new File(NombreORuta);
-
+    default void CrearArchivo(String NombreUbicacion) {
+        File archivo = new File(NombreUbicacion);
         try {
-            Archivo.createNewFile();
+            archivo.createNewFile();
         } catch (IOException ex) {
             ex.printStackTrace(System.out);
         }
-        System.out.println("Archivo creado");
+        System.out.println("Archivo creado.");
+
     }
 
-    public static void SobreEscribirListas(String NombreORuta, List<Persona> lista) {
-        File Archivo = new File(NombreORuta);
+    public void SobreEscribirListas(String NombreUbicacion, List<T> Lista);
 
-        try {
-            PrintWriter sobreEscrbir = new PrintWriter(Archivo);
-            for (Persona persona : lista) {
-                sobreEscrbir.println(persona);
-            }
-            
-            sobreEscrbir.close();
-        } catch (FileNotFoundException e) {
-        }
-    }
+    public List<T> LeerListasArchivo(String NombreUbicacion);
 
-    public static List<Persona> LeerListas(String NombreORuta) {
-        File Archivo = new File(NombreORuta);
-        List<Persona> listaRetornar = new ArrayList<>();
+    public boolean VerificarArchivo(String NombreUbicacion);
 
-        try {
-            BufferedReader LeerArchivo = new BufferedReader(new FileReader(Archivo));
-            while (LeerArchivo.readLine() != null) {
-                String linea;
-                while ((linea = LeerArchivo.readLine())!=null) {                    
-                    listaRetornar.add(Convertir(linea));
-                }
-                
-                
-            }
-            LeerArchivo.close();
-        } catch (IOException ex) {
-            ex.printStackTrace(System.out);
-        }
-
-        return listaRetornar;
-    }
-    public static boolean VerificarArchivo(String NombreORuta) {
-        File archivo = new File(NombreORuta);
-        return archivo.exists();
-    }
 }

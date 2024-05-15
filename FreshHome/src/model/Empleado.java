@@ -7,27 +7,27 @@ public class Empleado extends Persona {
 
     private int calificacion;
     private List<String> Habilidades;
-    private List<String> Herramientas;
     private int Tarifa;
-    private int AñosExperiencia;
+    private String AñosExperiencia;
     private String MetodoPago;
 
     public Empleado() {
     }
 
-    public Empleado(int calificacion, int Tarifa, int AñosExperiencia, String MetodoPago, String NombreCompleto, String numeroCedula, int añoNacimiento, int mesNacimiento, int diaNacimiento, int numeroCelular, String contraseña, String correo, Map<String, String> comentarios, List<Integer> calificaciones) {
+    public Empleado(int calificacion, List<String> Habilidades, int Tarifa, String AñosExperiencia, String MetodoPago, String NombreCompleto, String numeroCedula, int añoNacimiento, int mesNacimiento, int diaNacimiento, int numeroCelular, String contraseña, String correo, Map<String, String> comentarios, List<Integer> calificaciones) {
         super(NombreCompleto, numeroCedula, añoNacimiento, mesNacimiento, diaNacimiento, numeroCelular, contraseña, correo, comentarios, calificaciones);
         this.calificacion = calificacion;
+        this.Habilidades = Habilidades;
         this.Tarifa = Tarifa;
         this.AñosExperiencia = AñosExperiencia;
         this.MetodoPago = MetodoPago;
     }
 
-    public int getAñosExperiencia() {
+    public String getAñosExperiencia() {
         return AñosExperiencia;
     }
 
-    public void setAñosExperiencia(int AñosExperiencia) {
+    public void setAñosExperiencia(String AñosExperiencia) {
         this.AñosExperiencia = AñosExperiencia;
     }
 
@@ -53,14 +53,6 @@ public class Empleado extends Persona {
 
     public void setHabilidades(List<String> Habilidades) {
         this.Habilidades = Habilidades;
-    }
-
-    public List<String> getHerramientas() {
-        return Herramientas;
-    }
-
-    public void setHerramientas(List<String> Herramientas) {
-        this.Herramientas = Herramientas;
     }
 
     public int getTarifa() {
