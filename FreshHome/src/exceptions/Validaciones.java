@@ -11,7 +11,18 @@ public class Validaciones {
     }
 
     public boolean ValidarCedula(String cedula) throws CedulaNoValida {
-        return cedula.length() < 10 && cedula.length() > 8;
+        if (cedula == null || cedula.isEmpty()) {
+            throw new CedulaNoValida("La cédula no puede estar vacía.");
+        }
+
+        if (cedula.length() < 8 || cedula.length() > 10) {
+            throw new CedulaNoValida("La cédula debe tener entre 8 y 10 dígitos.");
+        }
+
+        if (!cedula.matches("\\d+")) {
+            throw new CedulaNoValida("La cédula solo debe contener dígitos.");
+        }
+        return true;
     }
 
     public boolean ValidarCorreoEmpleados(String Correo, List<Empleado> listaEmpleados) throws CorreoUsado {
@@ -21,7 +32,8 @@ public class Validaciones {
         }
         return indicador;
     }
-    public boolean ValidarCorreoClientes(String Correo, List<Cliente> listaClientes) throws CorreoUsado{
+
+    public boolean ValidarCorreoClientes(String Correo, List<Cliente> listaClientes) throws CorreoUsado {
         boolean indicador = false;
         for (Cliente cli : listaClientes) {
             indicador = !cli.getCorreo().equals(Correo);

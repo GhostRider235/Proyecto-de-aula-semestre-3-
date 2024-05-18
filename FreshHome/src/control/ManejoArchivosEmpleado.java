@@ -53,9 +53,7 @@ public class ManejoArchivosEmpleado implements ManejoArchivos<Empleado> {
             }
         } catch (FileNotFoundException ex) {
             ex.printStackTrace(System.out);
-        } catch (IOException ex) {
-            ex.printStackTrace(System.out);
-        } catch (ClassNotFoundException ex) {
+        } catch (IOException | ClassNotFoundException ex) {
             ex.printStackTrace(System.out);
         }
         return ListaEmpleados;

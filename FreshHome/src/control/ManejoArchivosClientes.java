@@ -41,21 +41,18 @@ public class ManejoArchivosClientes implements ManejoArchivos<Cliente> {
         List<Cliente> ListaClientes = new ArrayList<>();
         try {
             InputStream os = new FileInputStream(archivo);
-            ObjectInputStream leer = new ObjectInputStream(os);
-            try {
-                while (true) {
-                    ListaClientes.add((Cliente) leer.readObject());
+            try (ObjectInputStream leer = new ObjectInputStream(os)) {
+                try {
+                    while (true) {
+                        ListaClientes.add((Cliente) leer.readObject());
+                    }
+                } catch (EOFException ex) {
+                    ex.printStackTrace(System.out);
                 }
-            } catch (EOFException ex) {
-                ex.printStackTrace(System.out);
             }
-            leer.close();
-
         } catch (FileNotFoundException ex) {
             ex.printStackTrace(System.out);
-        } catch (IOException ex) {
-            ex.printStackTrace(System.out);
-        } catch (ClassNotFoundException ex) {
+        } catch (IOException | ClassNotFoundException ex) {
             ex.printStackTrace(System.out);
         }
         return ListaClientes;

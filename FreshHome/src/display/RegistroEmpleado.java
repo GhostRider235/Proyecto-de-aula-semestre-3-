@@ -371,7 +371,11 @@ public class RegistroEmpleado extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String dato = txtHabilidad.getText();
-        Habilidades.add(dato);
+        if (dato != null) {
+            Habilidades.add(dato);
+        } else {
+            aviso.showMessageDialog(null, "Por favor ingrese la habiliadad");
+        }
         aviso.showMessageDialog(null, "La habilidad se añadio.");
         if (modelo != null) {
             modelo.removeAllElements();
@@ -384,7 +388,7 @@ public class RegistroEmpleado extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-        JOptionPane aviso = new JOptionPane();
+        JOptionPane Aviso = new JOptionPane();
         Listados listas = new Listados();
         Empleado NuevoEmpleado;
         ManejoArchivos archivo = new ManejoArchivosEmpleado();
@@ -399,9 +403,11 @@ public class RegistroEmpleado extends javax.swing.JFrame {
         char[] Confirmacion = txtConfirmacionContraseña.getPassword();
         String confirmacionContraseña = new String(Confirmacion);
         try {
-            if (verificar.ValidarContraseña(contraseña, confirmacionContraseña)) {
+            if (!verificar.ValidarContraseña(contraseña, confirmacionContraseña)) {
+                aviso.showMessageDialog(null, "La contraseña que ingreso no coinciden.");
+            } else {
                 if (verificar.ValidarCedula(txtCedula.getText())) {
-                    if (verificar.ValidarCorreoEmpleados(txtCorreo.getText(), listas.getListadoEmpleados())) {
+                    if (!verificar.ValidarCorreoEmpleados(txtCorreo.getText(), listas.getListadoEmpleados())) {
                         NuevoEmpleado = registro.Datos(JListHabilidades.getSelectedValuesList(),
                                 Integer.parseInt(txtTarifa.getText()),
                                 JComboExperiencia.getSelectedItem().toString(),
@@ -414,19 +420,24 @@ public class RegistroEmpleado extends javax.swing.JFrame {
                         listas.AgregarEmpleado(NuevoEmpleado);
                         listas.AgregarEmpleadoAcceso(NuevoEmpleado);
                         acceso.EscribirDiccionario("Almacen de datos/ListaAccesos.txt", listas.getUsuarios());
-                        aviso.showMessageDialog(null, "El registro fue exitoso.");
+                        Aviso.showMessageDialog(null, "El registro fue exitoso.");
                         archivo.SobreEscribirListas("Almacen de datos/ListaEmpleados.txt", listas.getListadoEmpleados());
-                        this.setVisible(false);
                         inicio.setVisible(true);
                         inicio.setLocationRelativeTo(null);
-
+                        this.setVisible(false);
+                    } else {
+                         aviso.showMessageDialog(null, "El correo ya esta en uso.");
                     }
+                } else {
+                    aviso.showMessageDialog(null,"Ingrese bien su numero de identificacion.");
                 }
             }
 
-        } catch (ContraseñasDiferentes | CedulaNoValida | CorreoUsado | NullPointerException ex) {
+        } catch (ContraseñasDiferentes | CedulaNoValida | CorreoUsado | NullPointerException | NumberFormatException ex) {
             aviso.showMessageDialog(null, "No se ha podido avanzar ya que: " + ex.getMessage());
         }
+
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void JComboExperienciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JComboExperienciaActionPerformed

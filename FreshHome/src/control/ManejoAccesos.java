@@ -35,9 +35,9 @@ public class ManejoAccesos {
         File archivos = new File(NombreORuta);
         try {
             OutputStream os = new FileOutputStream(archivos);
-            ObjectOutputStream escribir = new ObjectOutputStream(os);
-            escribir.writeObject(Accesos);
-            escribir.close();
+            try (ObjectOutputStream escribir = new ObjectOutputStream(os)) {
+                escribir.writeObject(Accesos);
+            }
         } catch (FileNotFoundException ex) {
             ex.printStackTrace(System.out);
         } catch (IOException ex) {

@@ -141,7 +141,8 @@ public class PantallaInicioSesion extends javax.swing.JFrame {
             Stream<Persona> Usuarios = listas.getUsuarios().keySet().stream();
 
             String CorreoIngresado = txtCorreo.getText();
-            String ContraseñaIngresada = txtContraseña.getText();
+            char[] caracteres = txtContraseña.getPassword();
+            String ContraseñaIngresada = new String(caracteres);
 
             Persona persona = Usuarios
                     .filter(correo -> correo.getCorreo().equals(CorreoIngresado))
