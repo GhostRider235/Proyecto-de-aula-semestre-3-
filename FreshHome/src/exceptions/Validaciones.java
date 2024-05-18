@@ -19,9 +19,6 @@ public class Validaciones {
             throw new CedulaNoValida("La cédula debe tener entre 8 y 10 dígitos.");
         }
 
-        if (!cedula.matches("\\d+")) {
-            throw new CedulaNoValida("La cédula solo debe contener dígitos.");
-        }
         return true;
     }
 
