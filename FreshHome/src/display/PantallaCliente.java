@@ -1,13 +1,15 @@
 
 package display;
 
+import javax.swing.ImageIcon;
+
 public class PantallaCliente extends javax.swing.JFrame {
 
-    /**
-     * Creates new form PantallaCliente
-     */
+
     public PantallaCliente() {
         initComponents();
+        this.setLocationRelativeTo(null);
+       this.setIconImage(new ImageIcon(getClass().getResource("/imagenes/IconFeshHome.png")).getImage());
     }
 
     /**

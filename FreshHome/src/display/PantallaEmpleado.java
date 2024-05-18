@@ -1,11 +1,15 @@
 
 package display;
 
+import javax.swing.ImageIcon;
+
 public class PantallaEmpleado extends javax.swing.JFrame {
 
     
     public PantallaEmpleado() {
         initComponents();
+        this.setLocationRelativeTo(null);
+       this.setIconImage(new ImageIcon(getClass().getResource("/imagenes/IconFeshHome.png")).getImage());
     }
 
     /**

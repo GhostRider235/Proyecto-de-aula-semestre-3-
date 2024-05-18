@@ -1,20 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package display;
 
-/**
- *
- * @author M1603QA-MB079W
- */
+import javax.swing.ImageIcon;
+
 public class TipoUsuario extends javax.swing.JFrame {
 
-    /**
-     * Creates new form TipoUsuario
-     */
     public TipoUsuario() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setIconImage(new ImageIcon(getClass().getResource("/imagenes/IconFeshHome.png")).getImage());
     }
 
     /**
@@ -119,20 +112,20 @@ public class TipoUsuario extends javax.swing.JFrame {
         RegistroCliente Registro = new RegistroCliente();
         Registro.setVisible(true);
         Registro.setLocationRelativeTo(null);
-        
+        this.setVisible(false);
+
     }//GEN-LAST:event_RegistrarCliente2ActionPerformed
 
     private void RegistrarEmpleado2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarEmpleado2ActionPerformed
         RegistroEmpleado Registro = new RegistroEmpleado();
         Registro.setVisible(true);
         Registro.setLocationRelativeTo(null);
-        
+        this.setVisible(false);
     }//GEN-LAST:event_RegistrarEmpleado2ActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton RegistrarCliente2;

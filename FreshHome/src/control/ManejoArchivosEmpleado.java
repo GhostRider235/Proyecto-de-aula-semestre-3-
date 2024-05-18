@@ -2,34 +2,40 @@ package control;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import model.Empleado;
 
 public class ManejoArchivosEmpleado implements ManejoArchivos<Empleado> {
 
-    static Empleado Convertir(String linea) {
-        Empleado emp = new Empleado();
-
-        return emp;
-    }
 
     @Override
     public void SobreEscribirListas(String NombreUbicacion, List<Empleado> Lista) {
         File archivo = new File(NombreUbicacion);
-
         try {
-            PrintWriter escribir = new PrintWriter(archivo);
-            for (Empleado cliente : Lista) {
-                escribir.println(cliente);
+            OutputStream os = new FileOutputStream(archivo);
+            ObjectOutputStream escribir = new ObjectOutputStream(os);
+            for (Empleado e : Lista) {
+                escribir.writeObject(os);
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace(System.out);
+            escribir.close();
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace(System.out);
+
+        } catch (IOException ex) {
+            ex.printStackTrace(System.out);
+
         }
+
         System.out.println("Lista modificada.");
 
     }
@@ -40,15 +46,16 @@ public class ManejoArchivosEmpleado implements ManejoArchivos<Empleado> {
         File archivo = new File(NombreUbicacion);
         List<Empleado> ListaEmpleados = new ArrayList<>();
         try {
-            BufferedReader leerLista = new BufferedReader(new FileReader(archivo));
-            while (leerLista.readLine() != null) {
-                String Linea = leerLista.readLine();
-                ListaEmpleados.add(Convertir(Linea));
-
+            InputStream os = new FileInputStream(archivo);
+            ObjectInputStream leer = new ObjectInputStream(os);
+            while (true) {
+                ListaEmpleados.add((Empleado) leer.readObject());
             }
         } catch (FileNotFoundException ex) {
             ex.printStackTrace(System.out);
         } catch (IOException ex) {
+            ex.printStackTrace(System.out);
+        } catch (ClassNotFoundException ex) {
             ex.printStackTrace(System.out);
         }
         return ListaEmpleados;

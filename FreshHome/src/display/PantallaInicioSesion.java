@@ -8,12 +8,12 @@ import model.Empleado;
 import model.Listados;
 import model.Persona;
 
-public class PantallaInicioSesion extends javax.swing.JFrame{
+public class PantallaInicioSesion extends javax.swing.JFrame {
 
     public PantallaInicioSesion() {
         initComponents();
-       this.setLocationRelativeTo(null);
-       this.setIconImage(new ImageIcon(getClass().getResource("/imagenes/IconFeshHome.png")).getImage());
+        this.setLocationRelativeTo(null);
+        this.setIconImage(new ImageIcon(getClass().getResource("/imagenes/IconFeshHome.png")).getImage());
     }
 
     @SuppressWarnings("unchecked")
@@ -107,9 +107,9 @@ public class PantallaInicioSesion extends javax.swing.JFrame{
                     .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Registrar)
@@ -167,15 +167,17 @@ public class PantallaInicioSesion extends javax.swing.JFrame{
             }
         } catch (NullPointerException e) {
             advertencia.showMessageDialog(null, "Los datos ingresados no son validos.");
+
         }
 
-
+        this.setVisible(true);
     }//GEN-LAST:event_IniciarSesionActionPerformed
 
     private void RegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarActionPerformed
         TipoUsuario Usuario = new TipoUsuario();
         Usuario.setVisible(true);
         Usuario.setLocationRelativeTo(null);
+        this.setVisible(false);
     }//GEN-LAST:event_RegistrarActionPerformed
 
     private void txtCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorreoActionPerformed

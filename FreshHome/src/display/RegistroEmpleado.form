@@ -93,8 +93,8 @@
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
                                               <Group type="102" alignment="0" attributes="0">
-                                                  <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
-                                                  <Component id="JComboExperiencia" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                                                  <Component id="JComboExperiencia" min="-2" pref="160" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
                                           <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -372,11 +372,12 @@
         <Component class="javax.swing.JComboBox" name="JComboExperiencia">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="Menos de un a&#xf1;o"/>
-                <StringItem index="1" value="2 a 3 a&#xf1;os"/>
-                <StringItem index="2" value="4 a 5 a&#xf1;os"/>
-                <StringItem index="3" value="Mas de 6 a&#xf1;os"/>
+              <StringArray count="5">
+                <StringItem index="0" value="No tiene experiencia"/>
+                <StringItem index="1" value="Menos de un a&#xf1;o"/>
+                <StringItem index="2" value="2 a 3 a&#xf1;os"/>
+                <StringItem index="3" value="4 a 5 a&#xf1;os"/>
+                <StringItem index="4" value="Mas de 6 a&#xf1;os"/>
               </StringArray>
             </Property>
           </Properties>
@@ -428,12 +429,13 @@
         <Component class="javax.swing.JComboBox" name="jComboPago">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="5">
+              <StringArray count="6">
                 <StringItem index="0" value="Paypal"/>
                 <StringItem index="1" value="Tarjeta debito"/>
                 <StringItem index="2" value="Tarjeta de credito"/>
                 <StringItem index="3" value="Nequi"/>
                 <StringItem index="4" value="A la mano"/>
+                <StringItem index="5" value="PSE"/>
               </StringArray>
             </Property>
           </Properties>

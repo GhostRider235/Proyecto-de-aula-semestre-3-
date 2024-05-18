@@ -1,8 +1,14 @@
 package display;
 
+import control.ManejoAccesos;
 import control.ManejoArchivos;
 import control.ManejoArchivosClientes;
 import control.ProcesosClientes;
+import exceptions.CedulaNoValida;
+import exceptions.ContraseñasDiferentes;
+import exceptions.CorreoUsado;
+import exceptions.Validaciones;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import model.Cliente;
 import model.Listados;
@@ -11,7 +17,8 @@ public class RegistroCliente extends javax.swing.JFrame {
 
     public RegistroCliente() {
         initComponents();
-        JOptionPane aviso;
+        this.setLocationRelativeTo(null);
+        this.setIconImage(new ImageIcon(getClass().getResource("/imagenes/IconFeshHome.png")).getImage());
     }
 
     /**
@@ -223,47 +230,46 @@ public class RegistroCliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void RegistarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistarActionPerformed
+
         JOptionPane aviso = new JOptionPane();
         Listados listas = new Listados();
-        Cliente NuevoCliente = new Cliente();
+        Cliente NuevoCliente;
         ManejoArchivos Archivo = new ManejoArchivosClientes();
         ProcesosClientes ingresoCliente = new ProcesosClientes();
+        ManejoAccesos acceso = new ManejoAccesos();
+        Validaciones verificar = new Validaciones();
 
         char[] contraseñaCaracteres = txtContraseña.getPassword();
         String contraseña = new String(contraseñaCaracteres);
         char[] Confirmacion = txtConfirmarContraseña.getPassword();
         String confirmacionContraseña = new String(Confirmacion);
+        try {
+            if (verificar.ValidarContraseña(contraseña, confirmacionContraseña)) {
+                if (verificar.ValidarCedula(txtIdentificacion.getText())) {
+                    if (verificar.ValidarCorreoClientes(txtCorreo.getText(), listas.getLitadoClientes())) {
 
-        if (!contraseña.equals(confirmacionContraseña)) {
-            aviso.showMessageDialog(null, "Por favor escriba bien su contraseña.");
-        } else {
-
-            for (Cliente c : listas.getLitadoClientes()) {
-                if (!c.getNumeroCedula().equals(txtIdentificacion.getText())) {
-                    if (!c.getCorreo().equals(txtCorreo.getText())) {
-                        
-                        ingresoCliente.Datos(txtDireccion.getText(),
-                                Integer.parseInt(txtCodigoPostal.getText()) , 
-                                txtNombre.getText(), txtIdentificacion.getText(), 
+                        NuevoCliente = ingresoCliente.Datos(txtDireccion.getText(),
+                                Integer.parseInt(txtCodigoPostal.getText()),
+                                txtNombre.getText(), txtIdentificacion.getText(),
                                 Integer.parseInt(txtAño.getText()),
-                                jComboMes.getSelectedIndex()+1, (int)SpinnerDia.getValue(),
-                                Integer.parseInt(txtCelular.getText()), contraseña, 
+                                jComboMes.getSelectedIndex() + 1, (int) SpinnerDia.getValue(),
+                                Integer.parseInt(txtCelular.getText()), contraseña,
                                 txtCorreo.getText(), confirmacionContraseña);
-                        
-                        listas.getLitadoClientes().add(NuevoCliente);
 
+                        listas.getLitadoClientes().add(NuevoCliente);
+                        listas.AgregarClienteAcceso(NuevoCliente);
+                        acceso.EscribirDiccionario("Almacen de datos/ListaAccesos.txt", listas.getUsuarios());
+                        aviso.showMessageDialog(null, "El registro fue exitoso.");
                         Archivo.SobreEscribirListas("Almacen de datos/ListaClientes.txt", listas.getLitadoClientes());
+                        this.setVisible(false);
                         PantallaCliente vista = new PantallaCliente();
                         vista.setVisible(true);
-                    } else {
-                        aviso.showMessageDialog(null, "Esta correo ya esta siendo usado.");
                     }
-                } else {
-                    aviso.showMessageDialog(null, "Esta cedula ya ha sido registrada.");
+
                 }
-
             }
-
+        } catch (ContraseñasDiferentes | CedulaNoValida | CorreoUsado ex) {
+            aviso.showMessageDialog(null, "No se ha podido avanzar ya que: " + ex.getMessage());
         }
 
     }//GEN-LAST:event_RegistarActionPerformed

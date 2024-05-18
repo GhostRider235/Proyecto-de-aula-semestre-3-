@@ -1,10 +1,17 @@
 package display;
 
+import control.ManejoAccesos;
 import control.ManejoArchivos;
 import control.ManejoArchivosEmpleado;
 import control.ProcesosEmpleados;
+import exceptions.CedulaNoValida;
+import exceptions.ContraseñasDiferentes;
+import exceptions.CorreoUsado;
+import exceptions.Validaciones;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import model.Empleado;
 import model.Listados;
@@ -19,6 +26,8 @@ public class RegistroEmpleado extends javax.swing.JFrame {
     public RegistroEmpleado() {
         initComponents();
         JListHabilidades.setModel(modelo);
+        this.setLocationRelativeTo(null);
+        this.setIconImage(new ImageIcon(getClass().getResource("/imagenes/IconFeshHome.png")).getImage());
     }
 
     /**
@@ -125,7 +134,7 @@ public class RegistroEmpleado extends javax.swing.JFrame {
 
         jLabel11.setText("¿Cuanta experiencia tienes trabajando?");
 
-        JComboExperiencia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Menos de un año", "2 a 3 años", "4 a 5 años", "Mas de 6 años" }));
+        JComboExperiencia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No tiene experiencia", "Menos de un año", "2 a 3 años", "4 a 5 años", "Mas de 6 años" }));
         JComboExperiencia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JComboExperienciaActionPerformed(evt);
@@ -140,7 +149,7 @@ public class RegistroEmpleado extends javax.swing.JFrame {
 
         jLabel13.setText("¿Por donde quieres que te paguen?");
 
-        jComboPago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Paypal", "Tarjeta debito", "Tarjeta de credito", "Nequi", "A la mano" }));
+        jComboPago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Paypal", "Tarjeta debito", "Tarjeta de credito", "Nequi", "A la mano", "PSE" }));
 
         jButton1.setText("Agregar habilidad");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -207,8 +216,8 @@ public class RegistroEmpleado extends javax.swing.JFrame {
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel11)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(39, 39, 39)
-                                                .addComponent(JComboExperiencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addGap(27, 27, 27)
+                                                .addComponent(JComboExperiencia, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addGap(18, 18, 18)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(jLabel13)
@@ -374,45 +383,50 @@ public class RegistroEmpleado extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
         JOptionPane aviso = new JOptionPane();
         Listados listas = new Listados();
-        Empleado NuevoEmpleado = new Empleado();
+        Empleado NuevoEmpleado;
         ManejoArchivos archivo = new ManejoArchivosEmpleado();
         ProcesosEmpleados registro = new ProcesosEmpleados();
+        Validaciones verificar = new Validaciones();
+        ManejoAccesos acceso = new ManejoAccesos();
+
+        PantallaEmpleado inicio = new PantallaEmpleado();
 
         char[] contraseñaCaracteres = txtContraseña.getPassword();
         String contraseña = new String(contraseñaCaracteres);
         char[] Confirmacion = txtConfirmacionContraseña.getPassword();
         String confirmacionContraseña = new String(Confirmacion);
-
-        if (!contraseña.equals(confirmacionContraseña)) {
-            aviso.showMessageDialog(null, "Las contraseñas ingresadas no coinciden, intenta de nuevo.");
-        } else {
-
-            for (Empleado e : listas.getListadoEmpleados()) {
-                if (!e.getNumeroCedula().equals(txtCedula.getText())) {
-                    if (!e.getCorreo().equals(txtCorreo.getText())) {
-                        registro.Datos(JListHabilidades.getSelectedValuesList(),
+        try {
+            if (verificar.ValidarContraseña(contraseña, confirmacionContraseña)) {
+                if (verificar.ValidarCedula(txtCedula.getText())) {
+                    if (verificar.ValidarCorreoEmpleados(txtCorreo.getText(), listas.getListadoEmpleados())) {
+                        NuevoEmpleado = registro.Datos(JListHabilidades.getSelectedValuesList(),
                                 Integer.parseInt(txtTarifa.getText()),
                                 JComboExperiencia.getSelectedItem().toString(),
                                 jComboPago.getSelectedItem().toString(),
                                 txtNombre.getText(), txtCedula.getText(),
-                                Integer.parseInt(txtAño.getText()), 
-                                jComboMes.getSelectedIndex()+1, (int)SpinnerDia.getValue(),
+                                Integer.parseInt(txtAño.getText()),
+                                jComboMes.getSelectedIndex() + 1, (int) SpinnerDia.getValue(),
                                 Integer.parseInt(txtTelefono.getText()),
                                 contraseña, confirmacionContraseña, txtCorreo.getText());
-                    } else {
-                        aviso.showMessageDialog(null, "Esta correo ya esta siendo usado.");
-                    }
-                } else {
-                    aviso.showMessageDialog(null, "Esta cedula ya ha sido registrada.");
-                }
+                        listas.AgregarEmpleado(NuevoEmpleado);
+                        listas.AgregarEmpleadoAcceso(NuevoEmpleado);
+                        acceso.EscribirDiccionario("Almacen de datos/ListaAccesos.txt", listas.getUsuarios());
+                        aviso.showMessageDialog(null, "El registro fue exitoso.");
+                        archivo.SobreEscribirListas("Almacen de datos/ListaEmpleados.txt", listas.getListadoEmpleados());
+                        this.setVisible(false);
+                        inicio.setVisible(true);
+                        inicio.setLocationRelativeTo(null);
 
+                    }
+                }
             }
 
+        } catch (ContraseñasDiferentes | CedulaNoValida | CorreoUsado | NullPointerException ex) {
+            aviso.showMessageDialog(null, "No se ha podido avanzar ya que: " + ex.getMessage());
         }
-
-        NuevoEmpleado.setAñosExperiencia(JComboExperiencia.getSelectedItem().toString());
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void JComboExperienciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JComboExperienciaActionPerformed
