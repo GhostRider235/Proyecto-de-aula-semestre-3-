@@ -17,6 +17,7 @@ import model.Cliente;
 public class ManejoArchivosClientes implements ManejoArchivos<Cliente> {
 
     @Override
+    @SuppressWarnings("unchecked")
     public void SobreEscribirListas(String NombreUbicacion, List<Cliente> Lista) {
         File archivo = new File(NombreUbicacion);
         try {
@@ -36,6 +37,7 @@ public class ManejoArchivosClientes implements ManejoArchivos<Cliente> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Cliente> LeerListasArchivo(String NombreUbicacion) {
         File archivo = new File(NombreUbicacion);
         List<Cliente> ListaClientes = new ArrayList<>();

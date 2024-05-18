@@ -1,5 +1,10 @@
 package display;
 
+import control.ManejoAccesos;
+import control.ManejoArchivosClientes;
+import control.ManejoArchivosEmpleado;
+import java.io.Serializable;
+import java.util.List;
 import java.util.stream.Stream;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -8,9 +13,10 @@ import model.Empleado;
 import model.Listados;
 import model.Persona;
 
-public class PantallaInicioSesion extends javax.swing.JFrame {
+public class PantallaInicioSesion extends javax.swing.JFrame implements Serializable{
 
     public PantallaInicioSesion() {
+        
         initComponents();
         this.setLocationRelativeTo(null);
         this.setIconImage(new ImageIcon(getClass().getResource("/imagenes/IconFeshHome.png")).getImage());
@@ -136,7 +142,14 @@ public class PantallaInicioSesion extends javax.swing.JFrame {
     private void IniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IniciarSesionActionPerformed
         Listados listas = new Listados();
         JOptionPane advertencia = new JOptionPane();
+        ManejoAccesos archivos = new ManejoAccesos();
+        ManejoArchivosClientes cliente = new ManejoArchivosClientes();
+        ManejoArchivosEmpleado empleado = new ManejoArchivosEmpleado();
+        listas.setUsuarios(archivos.LeerDiccionario("Almacen de datos/ListaAccesos.txt"));
 
+        listas.setLitadoClientes(cliente.LeerListasArchivo("Almacen de datos/ListaClientes.txt"));
+        listas.setListadoEmpleados(empleado.LeerListasArchivo("Almacen de datos/ListaEmpleados.txt"));
+        
         try {
             Stream<Persona> Usuarios = listas.getUsuarios().keySet().stream();
 
@@ -144,28 +157,31 @@ public class PantallaInicioSesion extends javax.swing.JFrame {
             char[] caracteres = txtContraseña.getPassword();
             String ContraseñaIngresada = new String(caracteres);
 
-            Persona persona = Usuarios
-                    .filter(correo -> correo.getCorreo().equals(CorreoIngresado))
-                    .findFirst()
-                    .orElse(null);
-            if (persona == null) {
-                advertencia.showMessageDialog(null, "El correo ingresado no es correcto");
-            } else {
-                String contraseñaTmp = listas.getUsuarios().get(persona);
-                if (contraseñaTmp.equals(ContraseñaIngresada)) {
-                    if (persona instanceof Cliente) {
-                        PantallaCliente Mostrar = new PantallaCliente();
-                        Mostrar.setVisible(true);
-                        Mostrar.setLocationRelativeTo(null);
-                    } else if (persona instanceof Empleado) {
-                        PantallaEmpleado Mostrar = new PantallaEmpleado();
-                        Mostrar.setVisible(true);
-                        Mostrar.setLocationRelativeTo(null);
+            Persona usuario = Usuarios.filter(C -> C.getCorreo().equals(CorreoIngresado)).findFirst().orElse(null);
+
+            if (usuario != null) {
+                if (usuario.getContraseña().equals(ContraseñaIngresada)) {
+                    List<Empleado> empleados = listas.getListadoEmpleados();
+                    List<Cliente> clientes = listas.getLitadoClientes();
+                    
+                    if (usuario.equals(empleados)) {
+                        PantallaEmpleado inicio = new PantallaEmpleado();
+                        inicio.setVisible(true);
+                        inicio.setLocationRelativeTo(null);
+                        this.setVisible(false);
+                    } else if (usuario.equals(clientes)) {
+                        PantallaCliente inicio = new PantallaCliente();
+                        inicio.setVisible(true);
+                        inicio.setLocationRelativeTo(null);
+                        this.setVisible(false);
                     }
                 } else {
-                    advertencia.showMessageDialog(null, "La contraseña ingresada no es correcta");
+                    advertencia.showMessageDialog(null,"La contraseña es incorrecta.");
                 }
+            } else {
+                advertencia.showMessageDialog(null,"El correo es incorrecto.");
             }
+
         } catch (NullPointerException e) {
             advertencia.showMessageDialog(null, "Los datos ingresados no son validos.");
 

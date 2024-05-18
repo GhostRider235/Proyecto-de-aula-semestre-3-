@@ -1,11 +1,9 @@
 package control;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -19,6 +17,7 @@ public class ManejoArchivosEmpleado implements ManejoArchivos<Empleado> {
 
 
     @Override
+    @SuppressWarnings("unchecked")
     public void SobreEscribirListas(String NombreUbicacion, List<Empleado> Lista) {
         File archivo = new File(NombreUbicacion);
         try {
@@ -41,6 +40,7 @@ public class ManejoArchivosEmpleado implements ManejoArchivos<Empleado> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Empleado> LeerListasArchivo(String NombreUbicacion) {
 
         File archivo = new File(NombreUbicacion);

@@ -253,7 +253,7 @@ public class RegistroCliente extends javax.swing.JFrame {
                                 txtNombre.getText(), txtIdentificacion.getText(),
                                 Integer.parseInt(txtAño.getText()),
                                 jComboMes.getSelectedIndex() + 1, (int) SpinnerDia.getValue(),
-                                Integer.parseInt(txtCelular.getText()), contraseña,
+                                txtCelular.getText(), contraseña,
                                 txtCorreo.getText(), confirmacionContraseña);
 
                         listas.getLitadoClientes().add(NuevoCliente);

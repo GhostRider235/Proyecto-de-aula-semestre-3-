@@ -1,10 +1,13 @@
 package model;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class Empleado extends Persona {
+public class Empleado extends Persona  implements Serializable{
 
+    private static final long serialVersionUID = 1L;
+    
     private int calificacion;
     private List<String> Habilidades;
     private int Tarifa;
@@ -14,7 +17,7 @@ public class Empleado extends Persona {
     public Empleado() {
     }
 
-    public Empleado(int calificacion, List<String> Habilidades, int Tarifa, String AñosExperiencia, String MetodoPago, String NombreCompleto, String numeroCedula, int añoNacimiento, int mesNacimiento, int diaNacimiento, int numeroCelular, String contraseña, String correo, Map<String, String> comentarios, List<Integer> calificaciones) {
+    public Empleado(int calificacion, List<String> Habilidades, int Tarifa, String AñosExperiencia, String MetodoPago, String NombreCompleto, String numeroCedula, int añoNacimiento, int mesNacimiento, int diaNacimiento, String numeroCelular, String contraseña, String correo, Map<String, String> comentarios, List<Integer> calificaciones) {
         super(NombreCompleto, numeroCedula, añoNacimiento, mesNacimiento, diaNacimiento, numeroCelular, contraseña, correo, comentarios, calificaciones);
         this.calificacion = calificacion;
         this.Habilidades = Habilidades;

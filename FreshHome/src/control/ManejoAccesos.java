@@ -15,13 +15,14 @@ import model.Persona;
 
 public class ManejoAccesos {
 
+
+
     public boolean VerificarAccesos(String NombreORuta) {
         File archivos = new File(NombreORuta);
         return archivos.exists();
     }
-    
-    
-   public void CrearAcceso(String NombreORuta) {
+
+    public void CrearAcceso(String NombreORuta) {
         File archivos = new File(NombreORuta);
         try {
             archivos.createNewFile();
@@ -31,6 +32,7 @@ public class ManejoAccesos {
         System.out.println("Archivo creado.");
     }
 
+    @SuppressWarnings("unchecked")
     public void EscribirDiccionario(String NombreORuta, Map<Persona, String> Accesos) {
         File archivos = new File(NombreORuta);
         try {
@@ -46,6 +48,7 @@ public class ManejoAccesos {
         System.out.println("Archivo escrito.");
     }
 
+    @SuppressWarnings("unchecked")
     public Map<Persona, String> LeerDiccionario(String NombreORuta) {
         HashMap<Persona, String> listaAccesos = null;
         File archivo = new File(NombreORuta);
@@ -55,9 +58,7 @@ public class ManejoAccesos {
             listaAccesos = (HashMap<Persona, String>) leer.readObject();
         } catch (FileNotFoundException ex) {
             ex.printStackTrace(System.out);
-        } catch (IOException ex) {
-            ex.printStackTrace(System.out);
-        } catch (ClassNotFoundException ex) {
+        } catch (IOException | ClassNotFoundException ex) {
             ex.printStackTrace(System.out);
         }
         return listaAccesos;

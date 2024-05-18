@@ -1,5 +1,6 @@
 package control;
 
+import java.io.Serializable;
 import java.time.DateTimeException;
 import java.util.List;
 import java.util.Map;
@@ -8,9 +9,10 @@ import model.Empleado;
 import model.Listados;
 import model.Persona;
 
-public class ProcesosEmpleados implements Registro<Empleado> {
+public class ProcesosEmpleados implements Registro<Empleado>,Serializable {
+    private static final long serialVersionUID = 1L;
 
-    public Empleado Datos(List<String> Habilidades, int Tarifa, String AñosExperiencia, String MetodoPago, String NombreCompleto, String numeroCedula, int añoNacimiento, int mesNacimiento, int diaNacimiento, int numeroCelular, String contraseña, String ConfimacionContraseña, String correo) {
+    public Empleado Datos(List<String> Habilidades, int Tarifa, String AñosExperiencia, String MetodoPago, String NombreCompleto, String numeroCedula, int añoNacimiento, int mesNacimiento, int diaNacimiento, String numeroCelular, String contraseña, String ConfimacionContraseña, String correo) {
         Empleado empleado = new Empleado();
         JOptionPane aviso = new JOptionPane();
         empleado.setAñosExperiencia(AñosExperiencia);

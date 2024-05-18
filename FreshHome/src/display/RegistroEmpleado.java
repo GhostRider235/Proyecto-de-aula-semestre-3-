@@ -402,6 +402,10 @@ public class RegistroEmpleado extends javax.swing.JFrame {
         String contraseña = new String(contraseñaCaracteres);
         char[] Confirmacion = txtConfirmacionContraseña.getPassword();
         String confirmacionContraseña = new String(Confirmacion);
+        
+        
+        int Tarifa = Integer.parseInt(txtTarifa.getText());
+        
         try {
             if (!verificar.ValidarContraseña(contraseña, confirmacionContraseña)) {
                 aviso.showMessageDialog(null, "La contraseña que ingreso no coinciden.");
@@ -415,7 +419,7 @@ public class RegistroEmpleado extends javax.swing.JFrame {
                                 txtNombre.getText(), txtCedula.getText(),
                                 Integer.parseInt(txtAño.getText()),
                                 jComboMes.getSelectedIndex() + 1, (int) SpinnerDia.getValue(),
-                                Integer.parseInt(txtTelefono.getText()),
+                                txtTelefono.getText(),
                                 contraseña, confirmacionContraseña, txtCorreo.getText());
                         listas.AgregarEmpleado(NuevoEmpleado);
                         listas.AgregarEmpleadoAcceso(NuevoEmpleado);

@@ -1,5 +1,6 @@
 package control;
 
+import java.io.Serializable;
 import java.time.DateTimeException;
 import java.util.List;
 import java.util.Map;
@@ -8,9 +9,11 @@ import model.Cliente;
 import model.Listados;
 import model.Persona;
 
-public class ProcesosClientes implements Registro<Cliente> {
+public class ProcesosClientes implements Registro<Cliente>,Serializable {
+    
+    private static final long serialVersionUID = 1L;
 
-    public Cliente Datos(String Direccion, int codigoPostal, String NombreCompleto, String numeroCedula, int añoNacimiento, int mesNacimiento, int diaNacimiento, int numeroCelular, String contraseña,String Correo, String ConfirmacionContraseña) {
+    public Cliente Datos(String Direccion, int codigoPostal, String NombreCompleto, String numeroCedula, int añoNacimiento, int mesNacimiento, int diaNacimiento, String numeroCelular, String contraseña,String Correo, String ConfirmacionContraseña) {
         Cliente cliente = new Cliente();      
         JOptionPane aviso = new JOptionPane();
         cliente.setNumeroCelular(numeroCelular);

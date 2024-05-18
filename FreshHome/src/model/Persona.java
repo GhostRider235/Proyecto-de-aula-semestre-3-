@@ -1,17 +1,19 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-public class Persona {
+public class Persona implements Serializable{
+    private static final long serialVersionUID = 1L;
 
     private String NombreCompleto;
     private String numeroCedula;
     private int añoNacimiento;
     private int mesNacimiento;
     private int diaNacimiento;
-    private int numeroCelular;
+    private String numeroCelular;
     private String contraseña;
     private String correo;
     private LocalDate edad;
@@ -20,7 +22,7 @@ public class Persona {
     private LocalDate FechaNacimiento;
     static LocalDate FechaAhora = LocalDate.now();
 
-    public Persona(String NombreCompleto, String numeroCedula, int añoNacimiento, int mesNacimiento, int diaNacimiento, int numeroCelular, String contraseña, String correo, Map<String, String> comentarios, List<Integer> calificaciones) {
+    public Persona(String NombreCompleto, String numeroCedula, int añoNacimiento, int mesNacimiento, int diaNacimiento, String numeroCelular, String contraseña, String correo, Map<String, String> comentarios, List<Integer> calificaciones) {
         this.NombreCompleto = NombreCompleto;
         this.numeroCedula = numeroCedula;
         this.añoNacimiento = añoNacimiento;
@@ -130,11 +132,11 @@ public class Persona {
         return FechaNacimiento;
     }
 
-    public int getNumeroCelular() {
+    public String getNumeroCelular() {
         return numeroCelular;
     }
 
-    public void setNumeroCelular(int numeroCelular) {
+    public void setNumeroCelular(String numeroCelular) {
         this.numeroCelular = numeroCelular;
     }
 
