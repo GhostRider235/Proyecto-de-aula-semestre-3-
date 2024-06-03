@@ -244,9 +244,11 @@ public class RegistroCliente extends javax.swing.JFrame {
         char[] Confirmacion = txtConfirmarContraseña.getPassword();
         String confirmacionContraseña = new String(Confirmacion);
         try {
-            if (verificar.ValidarContraseña(contraseña, confirmacionContraseña)) {
+            if (!verificar.ValidarContraseña(contraseña, confirmacionContraseña)) {
+                aviso.showMessageDialog(null, "La contraseña que ingreso no coinciden.");
+            } else {
                 if (verificar.ValidarCedula(txtIdentificacion.getText())) {
-                    if (verificar.ValidarCorreoClientes(txtCorreo.getText(), listas.getLitadoClientes())) {
+                    if (!verificar.ValidarCorreoClientes(txtCorreo.getText(), listas.getLitadoClientes())) {
 
                         NuevoCliente = ingresoCliente.Datos(txtDireccion.getText(),
                                 Integer.parseInt(txtCodigoPostal.getText()),
@@ -266,6 +268,8 @@ public class RegistroCliente extends javax.swing.JFrame {
                         vista.setVisible(true);
                     }
 
+                } else {
+                    aviso.showMessageDialog(null, "La cedula ingresada ya esta registrada.");
                 }
             }
         } catch (ContraseñasDiferentes | CedulaNoValida | CorreoUsado ex) {

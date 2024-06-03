@@ -9,12 +9,15 @@ import exceptions.ContraseñasDiferentes;
 import exceptions.CorreoUsado;
 import exceptions.Validaciones;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import model.Empleado;
 import model.Listados;
+import model.Persona;
 
 public class RegistroEmpleado extends javax.swing.JFrame {
 
@@ -402,10 +405,8 @@ public class RegistroEmpleado extends javax.swing.JFrame {
         String contraseña = new String(contraseñaCaracteres);
         char[] Confirmacion = txtConfirmacionContraseña.getPassword();
         String confirmacionContraseña = new String(Confirmacion);
-        
-        
-        int Tarifa = Integer.parseInt(txtTarifa.getText());
-        
+        Map<Persona,String> Acceso = new HashMap<>(listas.getUsuarios());
+
         try {
             if (!verificar.ValidarContraseña(contraseña, confirmacionContraseña)) {
                 aviso.showMessageDialog(null, "La contraseña que ingreso no coinciden.");
@@ -422,10 +423,12 @@ public class RegistroEmpleado extends javax.swing.JFrame {
                                 txtTelefono.getText(),
                                 contraseña, confirmacionContraseña, txtCorreo.getText());
                         listas.AgregarEmpleado(NuevoEmpleado);
-                        listas.AgregarEmpleadoAcceso(NuevoEmpleado);
-                        acceso.EscribirDiccionario("Almacen de datos/ListaAccesos.txt", listas.getUsuarios());
-                        Aviso.showMessageDialog(null, "El registro fue exitoso.");
+                        listas.getListadoEmpleados().add(NuevoEmpleado);
+                        Acceso.put(NuevoEmpleado, NuevoEmpleado.getContraseña());
+                        listas.setUsuarios(Acceso);
                         archivo.SobreEscribirListas("Almacen de datos/ListaEmpleados.txt", listas.getListadoEmpleados());
+                        Aviso.showMessageDialog(null, "El registro fue exitoso.");
+                        
                         inicio.setVisible(true);
                         inicio.setLocationRelativeTo(null);
                         this.setVisible(false);

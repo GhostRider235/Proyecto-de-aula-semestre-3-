@@ -3,6 +3,7 @@ package display;
 import control.ManejoAccesos;
 import control.ManejoArchivosClientes;
 import control.ManejoArchivosEmpleado;
+import java.io.NotSerializableException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Stream;
@@ -13,10 +14,9 @@ import model.Empleado;
 import model.Listados;
 import model.Persona;
 
-public class PantallaInicioSesion extends javax.swing.JFrame implements Serializable{
+public class PantallaInicioSesion extends javax.swing.JFrame implements Serializable {
 
     public PantallaInicioSesion() {
-        
         initComponents();
         this.setLocationRelativeTo(null);
         this.setIconImage(new ImageIcon(getClass().getResource("/imagenes/IconFeshHome.png")).getImage());
@@ -140,51 +140,43 @@ public class PantallaInicioSesion extends javax.swing.JFrame implements Serializ
     }// </editor-fold>//GEN-END:initComponents
 
     private void IniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IniciarSesionActionPerformed
-        Listados listas = new Listados();
-        JOptionPane advertencia = new JOptionPane();
-        ManejoAccesos archivos = new ManejoAccesos();
-        ManejoArchivosClientes cliente = new ManejoArchivosClientes();
-        ManejoArchivosEmpleado empleado = new ManejoArchivosEmpleado();
-        listas.setUsuarios(archivos.LeerDiccionario("Almacen de datos/ListaAccesos.txt"));
+        Listados lista = new Listados();
+        JOptionPane aviso = new JOptionPane();
 
-        listas.setLitadoClientes(cliente.LeerListasArchivo("Almacen de datos/ListaClientes.txt"));
-        listas.setListadoEmpleados(empleado.LeerListasArchivo("Almacen de datos/ListaEmpleados.txt"));
+        Stream<Persona> Usuarios;
+
+        Usuarios = lista.getUsuarios().keySet().stream();
+
         
+        char[] CaracteresContraseña = txtContraseña.getPassword();
+        String contraseña = new String(CaracteresContraseña);
+        
+
         try {
-            Stream<Persona> Usuarios = listas.getUsuarios().keySet().stream();
-
-            String CorreoIngresado = txtCorreo.getText();
-            char[] caracteres = txtContraseña.getPassword();
-            String ContraseñaIngresada = new String(caracteres);
-
-            Persona usuario = Usuarios.filter(C -> C.getCorreo().equals(CorreoIngresado)).findFirst().orElse(null);
+            Persona usuario = Usuarios.filter(X -> X.getCorreo().equals(txtCorreo.getText())).findFirst().orElse(null);
 
             if (usuario != null) {
-                if (usuario.getContraseña().equals(ContraseñaIngresada)) {
-                    List<Empleado> empleados = listas.getListadoEmpleados();
-                    List<Cliente> clientes = listas.getLitadoClientes();
-                    
-                    if (usuario.equals(empleados)) {
-                        PantallaEmpleado inicio = new PantallaEmpleado();
-                        inicio.setVisible(true);
-                        inicio.setLocationRelativeTo(null);
+                if (usuario.getContraseña().equals(contraseña)) {
+                    if (usuario instanceof Cliente) {
+                        PantallaCliente cli = new PantallaCliente();
+                        cli.setVisible(true);
+                        cli.setLocationRelativeTo(null);
                         this.setVisible(false);
-                    } else if (usuario.equals(clientes)) {
-                        PantallaCliente inicio = new PantallaCliente();
-                        inicio.setVisible(true);
-                        inicio.setLocationRelativeTo(null);
+                    } else if (usuario instanceof Empleado){
+                        PantallaEmpleado emp = new PantallaEmpleado();
+                        emp.setVisible(true);
+                        emp.setLocationRelativeTo(null);
                         this.setVisible(false);
                     }
                 } else {
-                    advertencia.showMessageDialog(null,"La contraseña es incorrecta.");
+                    aviso.showMessageDialog(null,"La contraseña ingresada es incorrecta");
                 }
             } else {
-                advertencia.showMessageDialog(null,"El correo es incorrecto.");
+                aviso.showMessageDialog(null, "El correo ingresado es incorrecto.");
             }
 
-        } catch (NullPointerException e) {
-            advertencia.showMessageDialog(null, "Los datos ingresados no son validos.");
-
+        } catch (ClassCastException e) {
+            aviso.showMessageDialog(null, "No se ha podido iniciar sesion ya que: "+e.getMessage());
         }
 
         this.setVisible(true);
