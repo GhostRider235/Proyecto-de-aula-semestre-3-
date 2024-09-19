@@ -1,43 +1,63 @@
 package vista;
 
-import control.ManejoAccesos;
-import control.ManejoArchivosClientes;
-import control.ManejoArchivosEmpleado;
+import control.*;
 import display.PantallaInicioSesion;
-import java.io.EOFException;
-import java.io.Serializable;
-import model.Cliente;
-import model.Listados;
+import java.io.*;
+import model.*;
+
 
 public class Main implements Serializable {
 
     public static void main(String[] args) {
-
+        
+        //Objetos para manejar los archivos
         ManejoArchivosEmpleado empleados = new ManejoArchivosEmpleado();
         ManejoArchivosClientes clientes = new ManejoArchivosClientes();
         ManejoAccesos accesos = new ManejoAccesos();
+        
+        //Archivos
+        File emp = new File("Almacen/ListaEmpleados.txt");
+        File cli = new File("Almacen/ListaClientes.txt");
+        File acc = new File("Almacen/ListaAccesos.txt");
+        
+        //Listas
+        Listados l = new Listados();
+        
+        
+        // Inicio 
         PantallaInicioSesion view = new PantallaInicioSesion();
         view.setVisible(true);
         view.setLocationRelativeTo(null);
-        Listados l = new Listados();
-        if (!empleados.VerificarArchivo("Almacen de datos/ListaEmpleados.txt")) {
-            empleados.CrearArchivo("Almacen de datos/ListaEmpleados.txt");
+        
+        // Verificacion de archivos
+        if (emp.exists()) {
+            l.setListadoEmpleados(empleados.LeerListasArchivo("Almacen/ListaEmpleados.txt"));
         } else {
-            l.setListadoEmpleados(empleados.LeerListasArchivo("Almacen de datos/ListaEmpleados.txt"));
+            empleados.CrearArchivo("Almacen/ListaEmpleados.txt");
         }
-
-        if (!clientes.VerificarArchivo("Almacen de datos/ListaClientes.txt")) {
-            clientes.CrearArchivo("Almacen de datos/ListaClientes.txt");
+        
+        if (cli.exists()) {
+            l.setLitadoClientes(clientes.LeerListasArchivo("Almacen/ListaClientes.txt"));
         } else {
-            l.AgregarCliente((Cliente) clientes.LeerListasArchivo("Almacen de datos/ListaClientes.txt"));
-
+            clientes.CrearArchivo("Almacen/ListaClientes.txt");
         }
-        if (!accesos.VerificarAccesos("Almacen de datos/ListaAccesos.txt")) {
-            accesos.CrearAcceso("Almacen de datos/ListaAccesos.txt");
+        
+        if (acc.exists()) {
+            l.setUsuarios(accesos.LeerDiccionario("Almacen/ListaAccesos.txt"));
         } else {
-            l.setUsuarios(accesos.LeerDiccionario("Almacen de datos/ListaAccesos.txt"));
+            accesos.CrearAcceso("Almacen/ListaAccesos.txt");
         }
-
+        
+        //Extra
+        for (Persona x : l.getUsuarios().keySet()) {
+            
+            System.out.println("Correo : " + x.getCorreo());
+            System.out.println("Contraseña : " + x.getContraseña());
+            
+        }
+        
+        
+        
     }
 
 }

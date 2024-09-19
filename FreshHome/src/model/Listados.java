@@ -8,7 +8,6 @@ import java.util.Map;
 
 public class Listados implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     private Map<Persona, String> Usuarios = new HashMap<>();
     private List<Empleado> ListadoEmpleados = new ArrayList<>();
     private List<Cliente> LitadoClientes = new ArrayList<>();

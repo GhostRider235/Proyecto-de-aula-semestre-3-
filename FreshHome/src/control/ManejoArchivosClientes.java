@@ -3,44 +3,49 @@ package control;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Cliente;
+import model.Listados;
 
 public class ManejoArchivosClientes implements ManejoArchivos<Cliente>, Serializable {
 
     @Override
     public void SobreEscribirListas(String NombreUbicacion, List<Cliente> Lista) {
         File archivo = new File(NombreUbicacion);
-        try (ObjectOutputStream escribir = new ObjectOutputStream(new FileOutputStream(archivo))) {
+        try (
+            FileOutputStream os = new FileOutputStream(archivo);
+            ObjectOutputStream escribir = new ObjectOutputStream(os);
+                ) {
+            
             escribir.writeObject(Lista);
-            escribir.close();
+
             System.out.println("Lista modificada.");
         } catch (FileNotFoundException ex) {
             ex.printStackTrace(System.out);
-        } catch (IOException ex) {
-            ex.printStackTrace(System.out);
+        } catch (IOException e) {
+            e.printStackTrace(System.out);
         }
-
     }
 
     @Override
     public List<Cliente> LeerListasArchivo(String NombreUbicacion) {
         File archivo = new File(NombreUbicacion);
         List<Cliente> ListaClientes = new ArrayList<>();
-        try (ObjectInputStream leer = new ObjectInputStream(new FileInputStream(archivo))) {
-            while (true) {
-                try {
-                    ListaClientes = (List<Cliente>) leer.readObject();
-                    leer.close();
-                } catch (EOFException  e) {
-                    e.printStackTrace(System.out);
-                    break;
-                }
-            }
+        try {
+            FileInputStream os = new FileInputStream(archivo);
+            ObjectInputStream leer = new ObjectInputStream(os);
+            ListaClientes = (List<Cliente>) leer.readObject();
+
+        } catch (EOFException e) {
+            e.printStackTrace(System.out);
+            System.out.println("El archivo no tiene nada.");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace(System.out);
         } catch (IOException | ClassNotFoundException ex) {
             ex.printStackTrace(System.out);
         }
         return ListaClientes;
-
     }
 
     @Override
@@ -49,4 +54,6 @@ public class ManejoArchivosClientes implements ManejoArchivos<Cliente>, Serializ
         return archivo.exists();
     }
 
+    
+    
 }

@@ -74,6 +74,7 @@ public class RegistroEmpleado extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
         txtTelefono = new javax.swing.JTextField();
+        AnteriorVentana = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -170,6 +171,13 @@ public class RegistroEmpleado extends javax.swing.JFrame {
 
         jLabel14.setText("Telefono");
 
+        AnteriorVentana.setText("Atras");
+        AnteriorVentana.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AnteriorVentanaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -179,6 +187,8 @@ public class RegistroEmpleado extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton2)
+                        .addGap(18, 18, 18)
+                        .addComponent(AnteriorVentana, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1)
                         .addGap(35, 35, 35))
@@ -187,7 +197,7 @@ public class RegistroEmpleado extends javax.swing.JFrame {
                         .addComponent(jLabel9)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -234,11 +244,9 @@ public class RegistroEmpleado extends javax.swing.JFrame {
                                             .addComponent(jLabel10))))
                                 .addGap(37, 37, 37))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtCorreo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel8)
-                                        .addGap(225, 225, 225)))
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel14)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -256,7 +264,7 @@ public class RegistroEmpleado extends javax.swing.JFrame {
                                 .addComponent(txtConfirmacionContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtHabilidad, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(18, Short.MAX_VALUE))))
+                        .addContainerGap(30, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -330,7 +338,8 @@ public class RegistroEmpleado extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(jButton2)
+                    .addComponent(AnteriorVentana))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -413,6 +422,8 @@ public class RegistroEmpleado extends javax.swing.JFrame {
             } else {
                 if (verificar.ValidarCedula(txtCedula.getText())) {
                     if (!verificar.ValidarCorreoEmpleados(txtCorreo.getText(), listas.getListadoEmpleados())) {
+                        
+                        //Objeto que se va a almacenar
                         NuevoEmpleado = registro.Datos(JListHabilidades.getSelectedValuesList(),
                                 Integer.parseInt(txtTarifa.getText()),
                                 JComboExperiencia.getSelectedItem().toString(),
@@ -422,13 +433,17 @@ public class RegistroEmpleado extends javax.swing.JFrame {
                                 jComboMes.getSelectedIndex() + 1, (int) SpinnerDia.getValue(),
                                 txtTelefono.getText(),
                                 contraseña, confirmacionContraseña, txtCorreo.getText());
-                        listas.AgregarEmpleado(NuevoEmpleado);
-                        listas.getListadoEmpleados().add(NuevoEmpleado);
-                        Acceso.put(NuevoEmpleado, NuevoEmpleado.getContraseña());
-                        listas.setUsuarios(Acceso);
-                        archivo.SobreEscribirListas("Almacen de datos/ListaEmpleados.txt", listas.getListadoEmpleados());
-                        Aviso.showMessageDialog(null, "El registro fue exitoso.");
                         
+                        //Agregar objeto a la lista
+                        listas.AgregarEmpleado(NuevoEmpleado);
+                        listas.AgregarEmpleadoAcceso(NuevoEmpleado);
+                        
+                        //Guardar cambios en el archivo
+                        archivo.SobreEscribirListas("Almacen/ListaEmpleados.txt", listas.getListadoEmpleados());
+                        acceso.EscribirDiccionario("Almacen/ListaAccesos.txt", Acceso);
+                        Aviso.showMessageDialog(null, "El registro fua exitoso.");
+                        
+                        //Cambio de ventana
                         inicio.setVisible(true);
                         inicio.setLocationRelativeTo(null);
                         this.setVisible(false);
@@ -451,11 +466,18 @@ public class RegistroEmpleado extends javax.swing.JFrame {
 
     }//GEN-LAST:event_JComboExperienciaActionPerformed
 
+    private void AnteriorVentanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnteriorVentanaActionPerformed
+        PantallaInicioSesion inicio = new PantallaInicioSesion();
+        inicio.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_AnteriorVentanaActionPerformed
+
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton AnteriorVentana;
     private javax.swing.JComboBox<String> JComboExperiencia;
     private javax.swing.JList<String> JListHabilidades;
     private javax.swing.JSpinner SpinnerDia;

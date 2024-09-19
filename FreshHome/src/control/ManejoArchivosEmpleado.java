@@ -5,23 +5,22 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Empleado;
 
-public class ManejoArchivosEmpleado implements ManejoArchivos<Empleado>, Serializable {
+public class ManejoArchivosEmpleado implements ManejoArchivos<Empleado> {
 
     @Override
     public void SobreEscribirListas(String NombreUbicacion, List<Empleado> Lista) {
         File archivo = new File(NombreUbicacion);
-        try (ObjectOutputStream escribir = new ObjectOutputStream(new FileOutputStream(archivo))) {
+        try (
+                FileOutputStream os = new FileOutputStream(archivo); ObjectOutputStream escribir = new ObjectOutputStream(os);) {
+
             escribir.writeObject(Lista);
-            escribir.close();
+            System.out.println("Lista modificada.");
+
         } catch (FileNotFoundException ex) {
             ex.printStackTrace(System.out);
-
         } catch (IOException ex) {
             ex.printStackTrace(System.out);
-
         }
-
-        System.out.println("Lista modificada.");
 
     }
 
@@ -29,16 +28,17 @@ public class ManejoArchivosEmpleado implements ManejoArchivos<Empleado>, Seriali
     public List<Empleado> LeerListasArchivo(String NombreUbicacion) {
         File archivo = new File(NombreUbicacion);
         List<Empleado> ListaEmpleados = new ArrayList<>();
-        try (ObjectInputStream leer = new ObjectInputStream(new FileInputStream(archivo))) {
-            while (true) {
-                try {
-                    ListaEmpleados = (List<Empleado>) leer.readObject();
-                    leer.close();
-                } catch (EOFException e) {
-                    e.printStackTrace(System.out);
-                    break;
-                }
-            }
+
+        try (
+                FileInputStream os = new FileInputStream(archivo); 
+                ObjectInputStream leer = new ObjectInputStream(os);
+            ) {
+            ListaEmpleados = (List<Empleado>) leer.readObject();
+        } catch (EOFException e) {
+            e.printStackTrace(System.out);
+            System.out.println("El archivo no tiene nada.");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace(System.out);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace(System.out);
         }

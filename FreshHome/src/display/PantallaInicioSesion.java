@@ -1,12 +1,7 @@
 package display;
 
-import control.ManejoAccesos;
-import control.ManejoArchivosClientes;
-import control.ManejoArchivosEmpleado;
-import java.io.NotSerializableException;
 import java.io.Serializable;
-import java.util.List;
-import java.util.stream.Stream;
+import java.util.*;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import model.Cliente;
@@ -143,40 +138,48 @@ public class PantallaInicioSesion extends javax.swing.JFrame implements Serializ
         Listados lista = new Listados();
         JOptionPane aviso = new JOptionPane();
 
-        Stream<Persona> Usuarios;
+        Map<Persona, String> usuarios = lista.getUsuarios();
 
-        Usuarios = lista.getUsuarios().keySet().stream();
-
-        
+        // Obtener la contraseña ingresada por el usuario
         char[] CaracteresContraseña = txtContraseña.getPassword();
-        String contraseña = new String(CaracteresContraseña);
-        
+        String contraseñaIngresada = new String(CaracteresContraseña);
+
+        String correoIngresado = txtCorreo.getText().trim();
 
         try {
-            Persona usuario = Usuarios.filter(X -> X.getCorreo().equals(txtCorreo.getText())).findFirst().orElse(null);
+            // Buscar el usuario por el correo
+            Persona usuario = usuarios.keySet().stream()
+                    .filter(x -> x.getCorreo().equals(correoIngresado))
+                    .findFirst().orElse(null);
 
             if (usuario != null) {
-                if (usuario.getContraseña().equals(contraseña)) {
+                // Obtener la contraseña almacenada para el usuario encontrado
+                String contraseñaAlmacenada = usuarios.get(usuario);
+
+                // Comparar la contraseña ingresada con la almacenada
+                if (contraseñaAlmacenada.equals(contraseñaIngresada)) {
+                    
+                    // Iniciar sesión según el tipo de usuario
                     if (usuario instanceof Cliente) {
                         PantallaCliente cli = new PantallaCliente();
                         cli.setVisible(true);
                         cli.setLocationRelativeTo(null);
                         this.setVisible(false);
-                    } else if (usuario instanceof Empleado){
+                    } else if (usuario instanceof Empleado) {
                         PantallaEmpleado emp = new PantallaEmpleado();
                         emp.setVisible(true);
                         emp.setLocationRelativeTo(null);
                         this.setVisible(false);
                     }
                 } else {
-                    aviso.showMessageDialog(null,"La contraseña ingresada es incorrecta");
+                    aviso.showMessageDialog(null, "La contraseña ingresada es incorrecta.");
                 }
             } else {
                 aviso.showMessageDialog(null, "El correo ingresado es incorrecto.");
             }
 
         } catch (ClassCastException e) {
-            aviso.showMessageDialog(null, "No se ha podido iniciar sesion ya que: "+e.getMessage());
+            aviso.showMessageDialog(null, "No se ha podido iniciar sesión ya que: " + e.getMessage());
         }
 
         this.setVisible(true);
